@@ -54,7 +54,7 @@ namespace ServiceReservasi_015
             try
             {
 
-                string sql = "update dbo.Pemesanan set Nama_customer = '" + NamaCustomer + "', No_telepon = '" + No_telepon + "', where ID_reservasi = '" + IDPemesanan + "' ";
+                string sql = "update dbo.Pemesanan set Nama_customer = '" + NamaCustomer + "', No_telepon = '" + No_telepon + "' where ID_reservasi = '" + IDPemesanan + "' ";
 
                 connection = new SqlConnection(constring);
                 cmd = new SqlCommand(sql, connection);
@@ -78,7 +78,7 @@ namespace ServiceReservasi_015
             string a = "Gagal";
             try
             {
-                string sql = "DELETE FROM dbo.Pemesanan WHERE ID_reserasi = '" + IDPemesanan +"'";
+                string sql = "DELETE FROM dbo.Pemesanan WHERE ID_reservasi = '" + IDPemesanan + "'";
                 connection = new SqlConnection(constring);
                 cmd = new SqlCommand(sql, connection);
                 connection.Open();
