@@ -15,7 +15,7 @@ namespace ServiceReservasi_015
         SqlConnection connection;
         SqlCommand cmd;
 
-        public string pemesanan(string IDPemesanan, string NamaCustomer, string NoTelepon, string JumlahPemesan, string IDLokasi)
+        public string pemesanan(string IDPemesanan, string NamaCustomer, string NoTelepon, int JumlahPemesan, string IDLokasi)
         {
             string a = "gagal";
             try
@@ -54,8 +54,7 @@ namespace ServiceReservasi_015
             try
             {
 
-                string sql = "update dbo.Pemesanan set Nama_customer = '" + NamaCustomer + "', No_telepon = '" + No_telepon + "', " +
-                   " where ID_reservasi = '" + IDPemesanan + "' ";
+                string sql = "update dbo.Pemesanan set Nama_customer = '" + NamaCustomer + "', No_telepon = '" + No_telepon + "', where ID_reservasi = '" + IDPemesanan + "' ";
 
                 connection = new SqlConnection(constring);
                 cmd = new SqlCommand(sql, connection);
@@ -79,7 +78,7 @@ namespace ServiceReservasi_015
             string a = "Gagal";
             try
             {
-                string sql = "delete from dbo.Pemeanan where ID_reervasi = '" +IDPemesanan+"'";
+                string sql = "DELETE FROM dbo.Pemesanan WHERE ID_reserasi = '" + IDPemesanan +"'";
                 connection = new SqlConnection(constring);
                 cmd = new SqlCommand(sql, connection);
                 connection.Open();
@@ -124,11 +123,10 @@ namespace ServiceReservasi_015
 
         public List<Pemesanan> Pemesanan()
         {
-            List<Pemesanan> Pemesan = new List<Pemesanan>();
+            List<Pemesanan> Pemesanans = new List<Pemesanan>();
             try
             {
-                string sql = "select ID_reservasi, Nama_customer, No_telepon, Jumlah_pesanan, Nama_lokasi from dbo.Pemesanan " +
-                    "p join dbo.Lokai 1 on p.ID_lokai = 1.ID_lokasi";
+                string sql = "select ID_reservasi, Nama_customer, No_telepon, Jumlah_Pemesanan, Nama_lokasi from dbo.Pemesanan p INNER JOIN dbo.Lokasi l ON l.ID_Lokasi = p.ID_lokasi";
                 connection = new SqlConnection(constring);
                 cmd = new SqlCommand(sql, connection);
                 connection.Open();
@@ -141,7 +139,8 @@ namespace ServiceReservasi_015
                     data.NoTelepon = reader.GetString(2);
                     data.JumlahPemesan = reader.GetInt32(3);
                     data.Lokasi = reader.GetString(4);
-                    Pemesan.Add(data);
+                    Pemesanans.Add(data);
+                    
                 }
                 connection.Close();
             }
@@ -150,7 +149,7 @@ namespace ServiceReservasi_015
                 Console.WriteLine(ex);
             }
 
-            return Pemesan;
+            return Pemesanans;
         }
 
         public List<CekLokasi> ReviewLokasi()
