@@ -180,6 +180,119 @@ namespace ServiceReservasi_015
             return lokasiSingkat;
         }
 
-        
+        public string Login(string username,  string password)
+        {
+            string kategori = "";
+
+            string sql = "select Kategori from dbo.Login where Username = '" + username + "' and Password = '" + password + "'";
+            connection = new SqlConnection(constring);
+            cmd = new SqlCommand(sql, connection);
+            connection.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                kategori = reader.GetString(0);
+            }
+            return kategori;
+        }
+
+        public string Register(string username, string password, string kategori)
+        {
+            try
+            {
+                string sql = "insert into dbo.Login values('" + username + "','" + password + "','" + kategori + "')";
+                connection = new SqlConnection(constring);
+                cmd = new SqlCommand(sql, connection);
+                connection.Open();
+                cmd.ExecuteNonQuery();
+                connection.Close();
+
+                return "sukses";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        public string UpdateRegister(string username, string password, string kategori, int id)
+        {
+            try
+            {
+                string sql = "update dbo.Login set Username = '" + username + "', Password = '" + password + "', Kategori = '" + kategori + "' where ID_login = " + id + "";
+
+                connection = new SqlConnection(constring);
+                cmd = new SqlCommand(sql, connection);
+                connection.Open();
+                cmd.ExecuteNonQuery();
+                connection.Close();
+
+
+                return "sukses";
+            }
+            catch(Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        public string DeleteRegister(string username)
+        {
+            try
+            {
+                int id = 0;
+                string sql = "select ID_login from dbo.Login where Username = '" + username + "' ";
+                connection = new SqlConnection(constring);
+                cmd = new SqlCommand(sql, connection);
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    id = reader.GetInt32(0);
+                }
+                connection.Close();
+                string sql2 = "delete from dbo.Login where ID_login = " + id + "";
+                connection = new SqlConnection(constring);
+                cmd = new SqlCommand(sql2, connection);
+                connection.Open();
+                cmd.ExecuteNonQuery();
+                connection.Close();
+
+                return "sukses";
+            }catch(Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        public List<DataRegister> DataRegist()
+        {
+            List<DataRegister> list = new List<DataRegister>();
+
+            try
+            {
+                string sql = "select ID_login, Username, Password, Kategori from dbo.Login";
+                connection = new SqlConnection(constring);
+                cmd = new SqlCommand(sql, connection);
+                connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    DataRegister data = new DataRegister();
+                    data.id = reader.GetInt32(0);
+                    data.username = reader.GetString(1);
+                    data.password= reader.GetString(2);
+                    data.kategori = reader.GetString(3);
+                    list.Add(data);
+                }
+                connection.Close();
+            }
+            catch(Exception ex)
+            {
+                ex.ToString();
+            }
+
+            return list;
+        }
     }
 }
